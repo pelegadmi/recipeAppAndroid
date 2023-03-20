@@ -48,5 +48,18 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return recipes;
     }
 
+    public ArrayList<Recipe> getAllRecipe() {
+        SQLiteDatabase MyDB = this.getWritableDatabase();
+        Cursor cursor = MyDB.rawQuery("Select * from recipe", new String[]{});
+        ArrayList<Recipe> recipes = new ArrayList<Recipe>();
+        if (cursor.moveToFirst()) {
+            while (!cursor.isAfterLast()) {
+                recipes.add(new Recipe(cursor));
+                cursor.moveToNext();
+            }
+        }
+        return recipes;
+    }
+
 
 }

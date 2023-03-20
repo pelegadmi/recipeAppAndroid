@@ -19,6 +19,7 @@ import com.example.appfoodie.Adapters.RandomRecipeAdapter;
 import com.example.appfoodie.Listeners.RandomRecipeResponseListener;
 import com.example.appfoodie.Listeners.RecipeClickListener;
 import com.example.appfoodie.Models.RandomRecipeApiResponse;
+import com.example.appfoodie.Models.Recipe;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     Button LogRegisterButton;
     Button ShowRecipeButton;
     FirebaseAuth firebaseAuth;
+    DataBaseHelper DB;
 
 
     @Override
@@ -51,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
 
         ShowRecipeButton = (Button) findViewById(R.id.show_recipe);
         ShowRecipeButton.setOnClickListener(v -> createNewRecipe());
+
+        DB = new DataBaseHelper(this);
 
         if (userLoggedIn == null) {
             LogRegisterButton.setText("Sign in");
@@ -122,7 +126,9 @@ public class MainActivity extends AppCompatActivity {
             recyclerView = findViewById(R.id.recycler_random);
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this, 1));
-            randomRecipeAdapter = new RandomRecipeAdapter(MainActivity.this, response.recipes, recipeClickListener);
+            ArrayList<Recipe> recipes = DB.getAllRecipe();
+            recipes.addAll(response.recipes);
+            randomRecipeAdapter = new RandomRecipeAdapter(MainActivity.this, recipes, recipeClickListener);
             recyclerView.setAdapter(randomRecipeAdapter);
         }
 
