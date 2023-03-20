@@ -100,7 +100,7 @@
         android:textSize="20dp" />
 
     <Button
-        android:id="@+id/btback1"
+        android:id="@+id/bt_register"
         android:layout_width="661dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/password1"
@@ -108,7 +108,7 @@
         android:layout_marginTop="94dp"
         android:layout_marginRight="30dp"
         android:backgroundTint="@color/teal_700"
-        android:text="back"
+        android:text="Don't have an account? register here!"
         android:textColor="@color/white"
         android:textSize="20dp" />
 

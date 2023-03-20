@@ -42,10 +42,10 @@ public class ShowRecipeActivity extends AppCompatActivity {
         createRecipe.setOnClickListener(v -> {
             Intent intent = new Intent(ShowRecipeActivity.this, CreateRecipeActivity.class);
             startActivity(intent);
+            finish();
         });
         ArrayList<Recipe> recipes =  DB.getUserRecipe(userLoggedIn.getUid());
-//        ArrayList<Recipe> recipes = new ArrayList<>();
-//        recipes.add(new Recipe(123123,"",0,0,0,"www.google.com","asd"));
+
         recyclerView = findViewById(R.id.recycler_random_show);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(ShowRecipeActivity.this, 1));
@@ -56,12 +56,6 @@ public class ShowRecipeActivity extends AppCompatActivity {
 
     }
 
-    private final RecipeClickListener recipeClickListener = new RecipeClickListener() {
-        @Override
-        public void onRecipeClicked(String id) {
-            startActivity(new Intent(ShowRecipeActivity.this, RecipeDetailsActivity.class)
-                    .putExtra("id", id));
-
-        }
-    };
+    private final RecipeClickListener recipeClickListener = id -> startActivity(new Intent(ShowRecipeActivity.this, RecipeDetailsActivity.class)
+            .putExtra("id", id));
 }

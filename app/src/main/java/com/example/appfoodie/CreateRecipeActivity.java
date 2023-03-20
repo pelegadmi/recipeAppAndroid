@@ -2,6 +2,7 @@ package com.example.appfoodie;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -60,7 +61,10 @@ public class CreateRecipeActivity extends AppCompatActivity {
                     tryParse(servingsStr)) {
                 Recipe recipe = new Recipe(userLoggedIn.getUid(), Integer.parseInt(readyInMinutesStr), Integer.parseInt(servingsStr), url, title);
                 DB.insertData(recipe);
-                finish();
+                Intent intent = new Intent(CreateRecipeActivity.this, ShowRecipeActivity.class);
+
+                startActivity(intent);
+                finish(); // Call once you redirect to another activity
             } else {
                 Toast.makeText(this, "you must enter params", Toast.LENGTH_SHORT).show();
 

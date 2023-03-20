@@ -1,6 +1,7 @@
 package com.example.appfoodie.Adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,7 +45,13 @@ public class RandomRecipeAdapter extends RecyclerView.Adapter<RandomRecipeViewHo
         holder.textView_likes.setText(list.get(position).aggregateLikes+" Likes");
         holder.textView_servings.setText(list.get(position).servings+" Servings");
         holder.textView_time.setText(list.get(position).readyInMinutes+ " Minutes");
-        Picasso.get().load(list.get(position).image).into(holder.imageView_food);
+        try{
+
+            Picasso.get().load(list.get(position).image).into(holder.imageView_food);
+        }
+        catch (Exception e){
+            Log.e("Recipe Image getter", "failed to get image with error: ", e);
+        }
 
         holder.random_list_container.setOnClickListener(new View.OnClickListener() {
             @Override

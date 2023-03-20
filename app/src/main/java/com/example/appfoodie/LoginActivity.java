@@ -6,11 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -18,20 +16,16 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 
 import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class LoginActivity extends AppCompatActivity {
 
     FirebaseAuth firebaseAuth;
     EditText username, password;
     Button btnlogin;
-    Button btnback1;
+    Button btRegister;
 
     String TAG = "LogInActivity";
 
@@ -43,7 +37,7 @@ public class LoginActivity extends AppCompatActivity {
         username = (EditText) findViewById(R.id.username1);
         password = (EditText) findViewById(R.id.password1);
         btnlogin = (Button) findViewById(R.id.btnsignin1);
-        btnback1 = (Button) findViewById(R.id.btback1);
+        btRegister = (Button) findViewById(R.id.bt_register);
         firebaseAuth = FirebaseAuth.getInstance();
         /**
          * first we set the loading indicator
@@ -73,12 +67,9 @@ public class LoginActivity extends AppCompatActivity {
                             finish(); // Call once you redirect to another activity
 
                         }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull @NotNull Exception e) {
-                            Toast.makeText(LoginActivity.this, "failed 2 log in: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                            loadingIndicator.cancel();
-                        }
+                    }).addOnFailureListener(e -> {
+                        Toast.makeText(LoginActivity.this, "failed 2 log in: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        loadingIndicator.cancel();
                     });
                 } else {
                     Toast.makeText(LoginActivity.this, "please enter email/ password", Toast.LENGTH_SHORT).show();
@@ -90,11 +81,11 @@ public class LoginActivity extends AppCompatActivity {
         /**
          * move to resistor activity
          */
-        btnback1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
+        btRegister.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish(); // Call once you redirect to another activity
         });
     }
 

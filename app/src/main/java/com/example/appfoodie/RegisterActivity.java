@@ -74,6 +74,10 @@ public class RegisterActivity extends AppCompatActivity {
                         public void onSuccess(AuthResult authResult) {
 
                             loadingIndicator.cancel();
+                            Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent);
+                            finish(); // Call once you redirect to another activity
                         }
                     }).addOnFailureListener(e -> {
                         /**
