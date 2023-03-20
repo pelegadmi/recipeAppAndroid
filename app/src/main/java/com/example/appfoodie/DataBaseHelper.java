@@ -20,7 +20,15 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase MyDB) {
-        MyDB.execSQL("create Table recipe(id INTEGER primary key, userId VARCHAR(255), aggregateLikes INTEGER, readyInMinutes INTEGER, servings INTEGER, image VARCHAR(255),title VARCHAR(255))");
+        MyDB.execSQL("create Table recipe(" +
+                "id INTEGER primary key, " +
+                "userId VARCHAR(255), " +
+                "aggregateLikes INTEGER, " +
+                "readyInMinutes INTEGER, " +
+                "servings INTEGER, " +
+                "image VARCHAR(255), " +
+                "title VARCHAR(255), " +
+                "summary VARCHAR(500))");
     }
 
     @Override

@@ -19,7 +19,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
     FirebaseUser userLoggedIn;
     Button create;
     DataBaseHelper DB;
-    EditText titleEt, servingsEt, readyInMinutesEt, urlEt;
+    EditText titleEt, servingsEt, readyInMinutesEt, urlEt, summaryEt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +34,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
         servingsEt = (EditText) findViewById(R.id.create_servings);
         readyInMinutesEt = (EditText) findViewById(R.id.create_readyInMinutes);
         urlEt = (EditText) findViewById(R.id.create_URL);
+        summaryEt = (EditText) findViewById(R.id.create_summary);
 
         userLoggedIn = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -51,15 +52,19 @@ public class CreateRecipeActivity extends AppCompatActivity {
             urlEt.setTextColor(Color.BLACK);
             urlEt.setHintTextColor(Color.BLACK);
 
+            summaryEt.setTextColor(Color.BLACK);
+            summaryEt.setHintTextColor(Color.BLACK);
+
 
             String title = String.valueOf(titleEt.getText()),
                     url = String.valueOf(urlEt.getText()),
                     readyInMinutesStr = String.valueOf(readyInMinutesEt.getText()),
-                    servingsStr = String.valueOf(servingsEt.getText());
+                    servingsStr = String.valueOf(servingsEt.getText()),
+                    summary = String.valueOf(summaryEt.getText());
 
-            if (title.length() > 0 && url.length() > 0 && tryParse(readyInMinutesStr) &&
+            if (title.length() > 0 && url.length() > 0 && summary.length() > 0 && tryParse(readyInMinutesStr) &&
                     tryParse(servingsStr)) {
-                Recipe recipe = new Recipe(userLoggedIn.getUid(), Integer.parseInt(readyInMinutesStr), Integer.parseInt(servingsStr), url, title);
+                Recipe recipe = new Recipe(userLoggedIn.getUid(), Integer.parseInt(readyInMinutesStr), Integer.parseInt(servingsStr), url, title, summary);
                 DB.insertData(recipe);
                 Intent intent = new Intent(CreateRecipeActivity.this, ShowRecipeActivity.class);
 
@@ -77,13 +82,20 @@ public class CreateRecipeActivity extends AppCompatActivity {
                     urlEt.setTextColor(Color.RED);
                     urlEt.setHintTextColor(Color.RED);
                 }
+
                 if (!tryParse(readyInMinutesStr)) {
                     readyInMinutesEt.setTextColor(Color.RED);
                     readyInMinutesEt.setHintTextColor(Color.RED);
                 }
+
                 if (!tryParse(servingsStr)) {
                     servingsEt.setTextColor(Color.RED);
                     servingsEt.setHintTextColor(Color.RED);
+                }
+
+                if (summary.length() == 0) {
+                    summaryEt.setTextColor(Color.RED);
+                    summaryEt.setHintTextColor(Color.RED);
                 }
             }
         });

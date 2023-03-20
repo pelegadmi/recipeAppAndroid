@@ -19,8 +19,8 @@
         <EditText
             android:id="@+id/create_title"
             android:layout_width="match_parent"
-            android:hint="title"
-            android:layout_height="50dp" />
+            android:layout_height="50dp"
+            android:hint="title" />
 
         <EditText
             android:id="@+id/create_servings"
@@ -41,6 +41,13 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:hint="URL"
+            android:inputType="textUri" />
+
+        <EditText
+            android:id="@+id/create_summary"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:hint="Summary"
             android:inputType="textUri" />
 
 

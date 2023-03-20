@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,7 +28,7 @@ import java.util.List;
 
 public class RecipeDetailsActivity extends AppCompatActivity {
     Recipe recipe;
-    TextView textView_meal_name, textView_meal_source, textView_meal_summary;
+    TextView textView_meal_name, textView_meal_source, textView_meal_summary, textView_ing;
     ImageView imageView_meal_image;
     RecyclerView recycler_meal_ingredients, recycler_meal_instructions;
     RequestManager manager;
@@ -53,9 +54,11 @@ public class RecipeDetailsActivity extends AppCompatActivity {
             dialog.show();
         }
         else {
-            textView_meal_name.setText("response.title");
-            textView_meal_source.setText("response.sourceName");
-            textView_meal_summary.setText("response.summary");
+            textView_meal_name.setText(recipe.title);
+            Picasso.get().load(recipe.image).into(imageView_meal_image);
+
+            textView_meal_summary.setText(recipe.summary);
+            textView_ing.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -63,6 +66,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         textView_meal_name = findViewById(R.id.textView_meal_name);
         textView_meal_source = findViewById(R.id.textView_meal_source);
         textView_meal_summary= findViewById(R.id.textView_meal_summary);
+        textView_ing= findViewById(R.id.show_ing);
         imageView_meal_image = findViewById(R.id.imageView_meal_image);
         recycler_meal_ingredients = findViewById(R.id.recycler_meal_ingredients);
         recycler_meal_instructions = findViewById(R.id.recycler_meal_instructions);

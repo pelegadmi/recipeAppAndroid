@@ -155,8 +155,6 @@ public class MainActivity extends AppCompatActivity {
     };
     private final RecipeClickListener recipeClickListener = recipe -> startActivity(new Intent(MainActivity.this, RecipeDetailsActivity.class)
             .putExtra("recipe", recipe));
-
-
 }
 
 
