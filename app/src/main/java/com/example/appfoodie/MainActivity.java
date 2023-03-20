@@ -9,6 +9,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -20,6 +21,8 @@ import com.example.appfoodie.Adapters.RandomRecipeAdapter;
 import com.example.appfoodie.Listeners.RandomRecipeResponseListener;
 import com.example.appfoodie.Listeners.RecipeClickListener;
 import com.example.appfoodie.Models.RandomRecipeApiResponse;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
     List<String> tags = new ArrayList<>();
     SearchView searchView;
     Button LogRegisterButton;
+    Button CreateRecipeButton;
+    FirebaseAuth firebaseAuth;
 
 
     @Override
@@ -40,18 +45,23 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser userLoggedIn = FirebaseAuth.getInstance().getCurrentUser();
 
-        //screen rotation
 
+        LogRegisterButton = (Button) findViewById(R.id.LogRegisterButton);
+        LogRegisterButton.setOnClickListener(v -> RegisterLoginActivity());
 
+        CreateRecipeButton = (Button) findViewById(R.id.CreateRecipeButton);
+        CreateRecipeButton.setOnClickListener(v -> createNewRecipe());
 
-        LogRegisterButton =(Button) findViewById(R.id.LogRegisterButton);
-        LogRegisterButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                RegisterLoginActivity();
-            }
-        });
+        if (userLoggedIn == null) {
+            LogRegisterButton.setText("Sign in");
+            CreateRecipeButton.setVisibility(View.INVISIBLE);
+        } else {
+            LogRegisterButton.setText("Sign out");
+        }
+
 
         dialog = new ProgressDialog(this);
         dialog.setTitle("Loading...");
@@ -88,9 +98,23 @@ public class MainActivity extends AppCompatActivity {
         manager = new RequestManager(this);
 
     }
+
     public void RegisterLoginActivity() {
-        Intent intent = new Intent(this,RegisterActivity.class);
-        startActivity(intent);
+        FirebaseUser userLoggedIn = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (userLoggedIn == null) {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+        } else {
+            FirebaseAuth.getInstance().signOut();
+            LogRegisterButton.setText("Sign in");
+            CreateRecipeButton.setVisibility(View.INVISIBLE);
+        }
+
+    }
+
+    public void createNewRecipe() {
+        Log.w("RecipeTAG", "createNewRecipe: Done.");
     }
 
 
@@ -129,8 +153,8 @@ public class MainActivity extends AppCompatActivity {
     private final RecipeClickListener recipeClickListener = new RecipeClickListener() {
         @Override
         public void onRecipeClicked(String id) {
-        startActivity(new Intent(MainActivity.this, RecipeDetailsActivity.class)
-        .putExtra("id",id));
+            startActivity(new Intent(MainActivity.this, RecipeDetailsActivity.class)
+                    .putExtra("id", id));
 
         }
     };

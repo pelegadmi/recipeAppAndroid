@@ -63,6 +63,7 @@
         android:background="@drawable/bclogin"
         android:hint="Username"
         android:paddingLeft="20dp"
+        android:inputType="textEmailAddress"
         android:textColor="@color/teal_700"
         android:textColorHint="@color/teal_700"
         android:textSize="20dp" />
@@ -80,6 +81,7 @@
         android:layout_alignEnd="@+id/logIn"
         android:layout_alignStart="@+id/logIn"
         android:textColorHint="@color/teal_700"
+        android:inputType="textPassword"
         android:paddingLeft="20dp"
         android:textColor="@color/teal_700"
         android:hint="Password"/>
@@ -94,6 +96,19 @@
         android:layout_marginRight="30dp"
         android:backgroundTint="@color/teal_700"
         android:text="SIGN IN"
+        android:textColor="@color/white"
+        android:textSize="20dp" />
+
+    <Button
+        android:id="@+id/btback1"
+        android:layout_width="661dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/password1"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="94dp"
+        android:layout_marginRight="30dp"
+        android:backgroundTint="@color/teal_700"
+        android:text="back"
         android:textColor="@color/white"
         android:textSize="20dp" />
 

@@ -18,6 +18,8 @@ import com.example.appfoodie.Listeners.RecipeDetailsListener;
 import com.example.appfoodie.Models.Ingredient;
 import com.example.appfoodie.Models.InstructionsResponse;
 import com.example.appfoodie.Models.RecipeDetailsResponse;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -31,7 +33,6 @@ public class RecipeDetailsActivity extends AppCompatActivity {
     ProgressDialog dialog;
     IngredientsAdapter ingredientsAdapter;
     InstructionsAdapter instructionsAdapter;
-
 
 
     @Override
