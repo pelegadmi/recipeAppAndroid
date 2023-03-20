@@ -1,41 +1,61 @@
 package com.example.appfoodie.Models;
 
-import java.util.ArrayList;
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.util.Log;
 
 public class Recipe {
-    public boolean vegetarian;
-    public boolean vegan;
-    public boolean glutenFree;
-    public boolean dairyFree;
-    public boolean veryHealthy;
-    public boolean cheap;
-    public boolean veryPopular;
-    public boolean sustainable;
-    public int weightWatcherSmartPoints;
-    public String gaps;
-    public boolean lowFodmap;
-    public int aggregateLikes;
-    public double spoonacularScore;
-    public double healthScore;
-    public String creditsText;
-    public String license;
-    public String sourceName;
-    public double pricePerServing;
-    public ArrayList<ExtendedIngredient> extendedIngredients;
     public int id;
-    public String title;
+    public String userId;
+    public int aggregateLikes;
     public int readyInMinutes;
     public int servings;
-    public String sourceUrl;
     public String image;
-    public String imageType;
-    public String summary;
-    public ArrayList<Object> cuisines;
-    public ArrayList<String> dishTypes;
-    public ArrayList<String> diets;
-    public ArrayList<String> occasions;
-    public String instructions;
-    public ArrayList<AnalyzedInstruction> analyzedInstructions;
-    public Object originalId;
-    public String spoonacularSourceUrl;
+    public String title;
+
+    public Recipe(int id, String userId, int aggregateLikes, int readyInMinutes, int servings, String image, String title) {
+        this.id = id;
+        this.userId = userId;
+        this.aggregateLikes = aggregateLikes;
+        this.readyInMinutes = readyInMinutes;
+        this.servings = servings;
+        this.image = image;
+        this.title = title;
+    }
+
+    public Recipe(String userId, int readyInMinutes, int servings, String image, String title) {
+        this.userId = userId;
+        this.aggregateLikes = 0;
+        this.readyInMinutes = readyInMinutes;
+        this.servings = servings;
+        this.image = image;
+        this.title = title;
+    }
+
+    public Recipe(Cursor cursor) {
+        try {
+
+            this.id = cursor.getInt(0);
+            this.userId = cursor.getString(1);
+            this.aggregateLikes = cursor.getInt(2);;
+            this.readyInMinutes = cursor.getInt(3);;
+            this.servings = cursor.getInt(4);
+            this.image = cursor.getString(5);
+            this.title = cursor.getString(6);
+        }
+        catch (Exception e){
+            Log.e("Recipe", "failed to presses data");
+        }
+    }
+
+    public ContentValues generateContentValues() {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("userId", userId);
+        contentValues.put("aggregateLikes", aggregateLikes);
+        contentValues.put("title", title);
+        contentValues.put("readyInMinutes", readyInMinutes);
+        contentValues.put("servings", servings);
+        contentValues.put("image", image);
+        return contentValues;
+    }
 }

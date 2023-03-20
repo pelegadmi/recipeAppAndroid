@@ -11,12 +11,23 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppFoodie">
         <activity
+            android:name=".CreateRecipeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ShowRecipeActivity"
+            android:exported="false" />
+        <activity
             android:name=".RecipeDetailsActivity"
             android:exported="false" />
-        <activity android:name=".RegisterActivity" android:exported="false" />
-        <activity android:name=".LoginActivity" android:exported="false"/>
         <activity
-            android:name=".MainActivity" android:configChanges="orientation|screenSize"
+            android:name=".RegisterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
+            android:configChanges="orientation|screenSize"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

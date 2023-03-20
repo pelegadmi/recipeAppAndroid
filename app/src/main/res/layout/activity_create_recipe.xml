@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/teal_700"
+        android:orientation="vertical"
+        tools:context=".MainActivity">
+
+
+        <EditText
+            android:id="@+id/create_title"
+            android:layout_width="match_parent"
+            android:hint="title"
+            android:layout_height="50dp" />
+
+        <EditText
+            android:id="@+id/create_servings"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="servings"
+            android:inputType="number" />
+
+        <EditText
+            android:id="@+id/create_readyInMinutes"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="ready In Minutes"
+            android:inputType="number" />
+
+        <EditText
+            android:id="@+id/create_URL"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="URL"
+            android:inputType="textUri" />
+
+
+        <Button
+            android:id="@+id/create_recipe"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="50dp"
+            android:layout_marginBottom="16dp"
+            android:backgroundTint="@color/white"
+            android:text="Create Recipe"
+            android:textColor="@color/teal_700"
+            android:textSize="16dp"
+            android:textStyle="normal" />
+
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

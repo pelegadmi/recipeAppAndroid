@@ -7,9 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -36,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     List<String> tags = new ArrayList<>();
     SearchView searchView;
     Button LogRegisterButton;
-    Button CreateRecipeButton;
+    Button ShowRecipeButton;
     FirebaseAuth firebaseAuth;
 
 
@@ -48,20 +46,18 @@ public class MainActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser userLoggedIn = FirebaseAuth.getInstance().getCurrentUser();
 
-
         LogRegisterButton = (Button) findViewById(R.id.LogRegisterButton);
         LogRegisterButton.setOnClickListener(v -> RegisterLoginActivity());
 
-        CreateRecipeButton = (Button) findViewById(R.id.CreateRecipeButton);
-        CreateRecipeButton.setOnClickListener(v -> createNewRecipe());
+        ShowRecipeButton = (Button) findViewById(R.id.show_recipe);
+        ShowRecipeButton.setOnClickListener(v -> createNewRecipe());
 
         if (userLoggedIn == null) {
             LogRegisterButton.setText("Sign in");
-            CreateRecipeButton.setVisibility(View.INVISIBLE);
+            ShowRecipeButton.setVisibility(View.INVISIBLE);
         } else {
             LogRegisterButton.setText("Sign out");
         }
-
 
         dialog = new ProgressDialog(this);
         dialog.setTitle("Loading...");
@@ -108,13 +104,14 @@ public class MainActivity extends AppCompatActivity {
         } else {
             FirebaseAuth.getInstance().signOut();
             LogRegisterButton.setText("Sign in");
-            CreateRecipeButton.setVisibility(View.INVISIBLE);
+            ShowRecipeButton.setVisibility(View.INVISIBLE);
         }
 
     }
 
     public void createNewRecipe() {
-        Log.w("RecipeTAG", "createNewRecipe: Done.");
+        Intent intent = new Intent(this, ShowRecipeActivity.class);
+        startActivity(intent);
     }
 
 

@@ -1,53 +1,52 @@
 package com.example.appfoodie;
-import android.content.ContentValues;
+
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import androidx.annotation.Nullable;
+import com.example.appfoodie.Models.Recipe;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DataBaseHelper  extends SQLiteOpenHelper {
-    public static final String DBNAME = "Login.db";
+public class DataBaseHelper extends SQLiteOpenHelper {
+    public static final String DBNAME = "recipe.db";
 
     public DataBaseHelper(Context context) {
-        super(context, "Login.db", null, 1);
+        super(context, DBNAME, null, 1);
     }
 
     @Override
     public void onCreate(SQLiteDatabase MyDB) {
-        MyDB.execSQL("create Table users(username TEXT primary key, password TEXT)");
+        MyDB.execSQL("create Table recipe(id INTEGER primary key, userId VARCHAR(255), aggregateLikes INTEGER, readyInMinutes INTEGER, servings INTEGER, image VARCHAR(255),title VARCHAR(255))");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase MyDB, int i, int i1) {
-        MyDB.execSQL("drop Table if exists users");
+        MyDB.execSQL("drop Table if exists recipe");
     }
-    public  Boolean insertData(String username, String password){
+
+    public Boolean insertData(Recipe recipe) {
         SQLiteDatabase MyDB = this.getWritableDatabase();
-        ContentValues contentValues= new ContentValues();
-        contentValues.put("username",username);
-        contentValues.put("password",password);
-        long result =MyDB.insert("users",null,contentValues);
-        if (result==-1) return false;
-        else return true;
+
+        long result = MyDB.insert("recipe", null, recipe.generateContentValues());
+        return result != -1;
     }
-    public Boolean checkusername (String username){
+
+    public ArrayList<Recipe> getUserRecipe(String userId) {
         SQLiteDatabase MyDB = this.getWritableDatabase();
-        Cursor cursor = MyDB.rawQuery("Select * from users where username =?", new String[]{username});
-        if (cursor.getCount()>0)
-            return true;
-        else
-            return false;
+        Cursor cursor = MyDB.rawQuery("Select * from recipe where userId =?", new String[]{userId});
+        ArrayList<Recipe> recipes = new ArrayList<Recipe>();
+        if (cursor.moveToFirst()) {
+            while (!cursor.isAfterLast()) {
+                recipes.add(new Recipe(cursor));
+                cursor.moveToNext();
+            }
+        }
+        return recipes;
     }
-    public Boolean checkusernamepassword(String username, String password){
-        SQLiteDatabase MyDB = this.getWritableDatabase();
-        Cursor cursor =MyDB.rawQuery("Select * from users where username =? and password=?", new String[]{username,password});
-        if (cursor.getCount()>0)
-            return true;
-        else
-            return false;
-    }
+
+
 }
