@@ -78,6 +78,12 @@
                 android:layout_margin="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
+            <Button
+                android:id="@+id/recipe_edit_btn"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:text="update"
+                android:visibility="gone"/>
 
 
 

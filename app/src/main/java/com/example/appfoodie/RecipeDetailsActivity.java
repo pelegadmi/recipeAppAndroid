@@ -4,10 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +30,8 @@ import java.util.List;
 
 public class RecipeDetailsActivity extends AppCompatActivity {
     Recipe recipe;
+    boolean edit;
+    Button recipeEditBtn;
     TextView textView_meal_name, textView_meal_source, textView_meal_summary, textView_ing;
     ImageView imageView_meal_image;
     RecyclerView recycler_meal_ingredients, recycler_meal_instructions;
@@ -45,31 +49,45 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         findViews();
 
         recipe = (Recipe) getIntent().getSerializableExtra("recipe");
-        if(!recipe.pullData) {
+        edit = getIntent().getBooleanExtra("edit", false);
+
+        if (!recipe.pullData) {
             manager = new RequestManager(this);
             manager.getRecipeDetails(recipeDetailsListener, recipe.id);
             manager.getInstructions(instructionsListener, recipe.id);
             dialog = new ProgressDialog(this);
             dialog.setTitle("Loading Details...");
             dialog.show();
-        }
-        else {
+        } else {
             textView_meal_name.setText(recipe.title);
             Picasso.get().load(recipe.image).into(imageView_meal_image);
 
             textView_meal_summary.setText(recipe.summary);
             textView_ing.setVisibility(View.INVISIBLE);
+
+            if (edit) {
+                recipeEditBtn.setVisibility(View.VISIBLE);
+
+                recipeEditBtn.setOnClickListener(v -> {
+                    Intent intent = new Intent(RecipeDetailsActivity.this, CreateRecipeActivity.class);
+                    intent.putExtra("recipe", recipe);
+                    startActivity(intent);
+                    finish();
+                });
+
+            }
         }
     }
 
     private void findViews() {
         textView_meal_name = findViewById(R.id.textView_meal_name);
         textView_meal_source = findViewById(R.id.textView_meal_source);
-        textView_meal_summary= findViewById(R.id.textView_meal_summary);
-        textView_ing= findViewById(R.id.show_ing);
+        textView_meal_summary = findViewById(R.id.textView_meal_summary);
+        textView_ing = findViewById(R.id.show_ing);
         imageView_meal_image = findViewById(R.id.imageView_meal_image);
         recycler_meal_ingredients = findViewById(R.id.recycler_meal_ingredients);
         recycler_meal_instructions = findViewById(R.id.recycler_meal_instructions);
+        recipeEditBtn = findViewById(R.id.recipe_edit_btn);
 
     }
 
@@ -83,7 +101,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
             Picasso.get().load(response.image).into(imageView_meal_image);
 
             recycler_meal_ingredients.setHasFixedSize(true);
-            recycler_meal_ingredients.setLayoutManager(new LinearLayoutManager(RecipeDetailsActivity.this,LinearLayoutManager.HORIZONTAL, false));
+            recycler_meal_ingredients.setLayoutManager(new LinearLayoutManager(RecipeDetailsActivity.this, LinearLayoutManager.HORIZONTAL, false));
 
             ingredientsAdapter = new IngredientsAdapter(RecipeDetailsActivity.this, response.extendedIngredients);
             recycler_meal_ingredients.setAdapter(ingredientsAdapter);
@@ -91,22 +109,23 @@ public class RecipeDetailsActivity extends AppCompatActivity {
 
         @Override
         public void didError(String message) {
-            Toast.makeText(RecipeDetailsActivity.this,message ,Toast.LENGTH_SHORT).show();
+            Toast.makeText(RecipeDetailsActivity.this, message, Toast.LENGTH_SHORT).show();
 
         }
     };
-        private final InstructionsListener instructionsListener = new InstructionsListener() {
-            @Override
-            public void didFetch(List<InstructionsResponse> response, String message) {
-                recycler_meal_instructions.setHasFixedSize(true);
-                recycler_meal_instructions.setLayoutManager(new LinearLayoutManager(RecipeDetailsActivity.this, LinearLayoutManager.VERTICAL, false));
-                instructionsAdapter = new InstructionsAdapter(RecipeDetailsActivity.this, response);
-                recycler_meal_instructions.setAdapter(instructionsAdapter);
-            }
+    private final InstructionsListener instructionsListener = new InstructionsListener() {
+        @Override
+        public void didFetch(List<InstructionsResponse> response, String message) {
+            recycler_meal_instructions.setHasFixedSize(true);
+            recycler_meal_instructions.setLayoutManager(new LinearLayoutManager(RecipeDetailsActivity.this, LinearLayoutManager.VERTICAL, false));
+            instructionsAdapter = new InstructionsAdapter(RecipeDetailsActivity.this, response);
+            recycler_meal_instructions.setAdapter(instructionsAdapter);
+        }
 
-            @Override
-            public void didError(String message) {
+        @Override
+        public void didError(String message) {
 
-            }
-        };
+        }
+    };
+
 }

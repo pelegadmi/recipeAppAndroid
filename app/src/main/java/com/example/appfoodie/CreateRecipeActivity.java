@@ -20,6 +20,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
     Button create;
     DataBaseHelper DB;
     EditText titleEt, servingsEt, readyInMinutesEt, urlEt, summaryEt;
+    Recipe recipe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +29,9 @@ public class CreateRecipeActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
         DB = new DataBaseHelper(this);
+        recipe = (Recipe) getIntent().getSerializableExtra("recipe");
+
+        userLoggedIn = FirebaseAuth.getInstance().getCurrentUser();
 
         create = (Button) findViewById(R.id.create_recipe);
         titleEt = (EditText) findViewById(R.id.create_title);
@@ -36,8 +40,15 @@ public class CreateRecipeActivity extends AppCompatActivity {
         urlEt = (EditText) findViewById(R.id.create_URL);
         summaryEt = (EditText) findViewById(R.id.create_summary);
 
-        userLoggedIn = FirebaseAuth.getInstance().getCurrentUser();
 
+        if (recipe != null) {
+            titleEt.setText(recipe.title);
+            servingsEt.setText(String.valueOf(recipe.servings));
+            readyInMinutesEt.setText(String.valueOf(recipe.readyInMinutes));
+            urlEt.setText(recipe.image);
+            summaryEt.setText(recipe.summary);
+            create.setText("Update recipe");
+        }
 
         create.setOnClickListener(v -> {
             titleEt.setTextColor(Color.BLACK);
@@ -64,12 +75,23 @@ public class CreateRecipeActivity extends AppCompatActivity {
 
             if (title.length() > 0 && url.length() > 0 && summary.length() > 0 && tryParse(readyInMinutesStr) &&
                     tryParse(servingsStr)) {
-                Recipe recipe = new Recipe(userLoggedIn.getUid(), Integer.parseInt(readyInMinutesStr), Integer.parseInt(servingsStr), url, title, summary);
-                DB.insertData(recipe);
-                Intent intent = new Intent(CreateRecipeActivity.this, ShowRecipeActivity.class);
+                Recipe newRecipe = new Recipe(userLoggedIn.getUid(), Integer.parseInt(readyInMinutesStr), Integer.parseInt(servingsStr), url, title, summary);
+                boolean sentData;
+                if (recipe == null) {
+                    sentData = DB.insertData(newRecipe);
+                } else {
+                    sentData = DB.updateData(newRecipe, String.valueOf(recipe.id));
+                }
+                if (sentData) {
 
-                startActivity(intent);
-                finish(); // Call once you redirect to another activity
+                    Intent intent = new Intent(CreateRecipeActivity.this, ShowRecipeActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    finish(); // Call once you redirect to another activity
+                } else {
+                    Toast.makeText(this, "failed to load data", Toast.LENGTH_SHORT).show();
+
+                }
             } else {
                 Toast.makeText(this, "you must enter params", Toast.LENGTH_SHORT).show();
 

@@ -37,7 +37,7 @@ public class RequestManager {
 
     public void  getRandomRecipes(RandomRecipeResponseListener listener, List<String> tags){
         CallRandomRecipes callRandomRecipes = retrofit.create(CallRandomRecipes.class);
-        Call<RandomRecipeApiResponse> call = callRandomRecipes.callRandomRecipe("fe339556c7b04db3b616a89cf35b6300","10", tags); //od 1-100
+        Call<RandomRecipeApiResponse> call = callRandomRecipes.callRandomRecipe("59a461de476c457bbe9357a2a3136efa","10", tags); //od 1-100
         call.enqueue(new Callback<RandomRecipeApiResponse>() {
             @Override
             public void onResponse(Call<RandomRecipeApiResponse> call, Response<RandomRecipeApiResponse> response) {

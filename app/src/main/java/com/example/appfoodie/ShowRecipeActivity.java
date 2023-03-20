@@ -44,7 +44,7 @@ public class ShowRecipeActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         });
-        ArrayList<Recipe> recipes =  DB.getUserRecipe(userLoggedIn.getUid());
+        ArrayList<Recipe> recipes = DB.getUserRecipe(userLoggedIn.getUid());
 
         recyclerView = findViewById(R.id.recycler_random_show);
         recyclerView.setHasFixedSize(true);
@@ -55,6 +55,15 @@ public class ShowRecipeActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(ShowRecipeActivity.this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
+
+    }
+
     private final RecipeClickListener recipeClickListener = (recipe) -> startActivity(new Intent(ShowRecipeActivity.this, RecipeDetailsActivity.class)
-            .putExtra("recipe", recipe));
+            .putExtra("recipe", recipe).putExtra("edit", true));
 }

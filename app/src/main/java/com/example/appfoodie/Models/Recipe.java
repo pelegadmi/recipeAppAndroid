@@ -65,6 +65,7 @@ public class Recipe implements Serializable {
         contentValues.put("readyInMinutes", readyInMinutes);
         contentValues.put("servings", servings);
         contentValues.put("image", image);
+        contentValues.put("summary", summary);
         return contentValues;
     }
 }

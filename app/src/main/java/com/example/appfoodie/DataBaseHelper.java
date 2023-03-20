@@ -43,6 +43,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return result != -1;
     }
 
+    public Boolean updateData(Recipe recipe, String id) {
+        SQLiteDatabase MyDB = this.getWritableDatabase();
+
+        long result = MyDB.update("recipe",recipe.generateContentValues(),"id=" + id, null );
+        return result != -1;
+    }
+
     public ArrayList<Recipe> getUserRecipe(String userId) {
         SQLiteDatabase MyDB = this.getWritableDatabase();
         Cursor cursor = MyDB.rawQuery("Select * from recipe where userId =?", new String[]{userId});
