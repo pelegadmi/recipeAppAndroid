@@ -4,7 +4,9 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.util.Log;
 
-public class Recipe {
+import java.io.Serializable;
+
+public class Recipe implements Serializable {
     public int id;
     public String userId;
     public int aggregateLikes;
@@ -12,6 +14,7 @@ public class Recipe {
     public int servings;
     public String image;
     public String title;
+    public boolean pullData;
 
     public Recipe(int id, String userId, int aggregateLikes, int readyInMinutes, int servings, String image, String title) {
         this.id = id;
@@ -21,6 +24,7 @@ public class Recipe {
         this.servings = servings;
         this.image = image;
         this.title = title;
+        this.pullData = true;
     }
 
     public Recipe(String userId, int readyInMinutes, int servings, String image, String title) {
@@ -30,6 +34,7 @@ public class Recipe {
         this.servings = servings;
         this.image = image;
         this.title = title;
+        this.pullData = true;
     }
 
     public Recipe(Cursor cursor) {
@@ -42,6 +47,7 @@ public class Recipe {
             this.servings = cursor.getInt(4);
             this.image = cursor.getString(5);
             this.title = cursor.getString(6);
+            this.pullData = true;
         }
         catch (Exception e){
             Log.e("Recipe", "failed to presses data");

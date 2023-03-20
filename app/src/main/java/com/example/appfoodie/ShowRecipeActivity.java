@@ -53,9 +53,8 @@ public class ShowRecipeActivity extends AppCompatActivity {
         randomRecipeAdapter = new RandomRecipeAdapter(ShowRecipeActivity.this, recipes, recipeClickListener);
         recyclerView.setAdapter(randomRecipeAdapter);
 
-
     }
 
-    private final RecipeClickListener recipeClickListener = id -> startActivity(new Intent(ShowRecipeActivity.this, RecipeDetailsActivity.class)
-            .putExtra("id", id));
+    private final RecipeClickListener recipeClickListener = (recipe) -> startActivity(new Intent(ShowRecipeActivity.this, RecipeDetailsActivity.class)
+            .putExtra("recipe", recipe));
 }

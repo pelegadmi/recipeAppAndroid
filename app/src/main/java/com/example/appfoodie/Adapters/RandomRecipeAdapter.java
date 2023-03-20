@@ -35,31 +35,25 @@ public class RandomRecipeAdapter extends RecyclerView.Adapter<RandomRecipeViewHo
     @NonNull
     @Override
     public RandomRecipeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new RandomRecipeViewHolder(LayoutInflater.from(context).inflate(R.layout.list_random_recipe,parent,false));
+        return new RandomRecipeViewHolder(LayoutInflater.from(context).inflate(R.layout.list_random_recipe, parent, false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull RandomRecipeViewHolder holder, int position) {
         holder.textView_title.setText(list.get(position).title);
         holder.textView_title.setSelected(true);
-        holder.textView_likes.setText(list.get(position).aggregateLikes+" Likes");
-        holder.textView_servings.setText(list.get(position).servings+" Servings");
-        holder.textView_time.setText(list.get(position).readyInMinutes+ " Minutes");
-        try{
+        holder.textView_likes.setText(list.get(position).aggregateLikes + " Likes");
+        holder.textView_servings.setText(list.get(position).servings + " Servings");
+        holder.textView_time.setText(list.get(position).readyInMinutes + " Minutes");
+        try {
 
             Picasso.get().load(list.get(position).image).into(holder.imageView_food);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             Log.e("Recipe Image getter", "failed to get image with error: ", e);
         }
 
-        holder.random_list_container.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onRecipeClicked(String.valueOf(list.get(holder.getAdapterPosition()).id));
-
-            }
-        });
+        holder.random_list_container.setOnClickListener(v ->
+                listener.onRecipeClicked(list.get(holder.getAdapterPosition())));
     }
 
     @Override
@@ -70,7 +64,7 @@ public class RandomRecipeAdapter extends RecyclerView.Adapter<RandomRecipeViewHo
 
 class RandomRecipeViewHolder extends RecyclerView.ViewHolder {
     CardView random_list_container;
-    TextView textView_title,textView_servings,textView_likes,textView_time;
+    TextView textView_title, textView_servings, textView_likes, textView_time;
     ImageView imageView_food;
 
     public RandomRecipeViewHolder(@NonNull View itemView) {

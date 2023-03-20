@@ -17,6 +17,7 @@ import com.example.appfoodie.Listeners.InstructionsListener;
 import com.example.appfoodie.Listeners.RecipeDetailsListener;
 import com.example.appfoodie.Models.Ingredient;
 import com.example.appfoodie.Models.InstructionsResponse;
+import com.example.appfoodie.Models.Recipe;
 import com.example.appfoodie.Models.RecipeDetailsResponse;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -25,7 +26,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 public class RecipeDetailsActivity extends AppCompatActivity {
-    int id;
+    Recipe recipe;
     TextView textView_meal_name, textView_meal_source, textView_meal_summary;
     ImageView imageView_meal_image;
     RecyclerView recycler_meal_ingredients, recycler_meal_instructions;
@@ -42,13 +43,20 @@ public class RecipeDetailsActivity extends AppCompatActivity {
 
         findViews();
 
-        id =Integer.parseInt(getIntent().getStringExtra("id"));
-        manager = new RequestManager(this);
-        manager.getRecipeDetails(recipeDetailsListener, id);
-        manager.getInstructions(instructionsListener, id);
-        dialog = new ProgressDialog(this);
-        dialog.setTitle("Loading Details...");
-        dialog.show();
+        recipe = (Recipe) getIntent().getSerializableExtra("recipe");
+        if(!recipe.pullData) {
+            manager = new RequestManager(this);
+            manager.getRecipeDetails(recipeDetailsListener, recipe.id);
+            manager.getInstructions(instructionsListener, recipe.id);
+            dialog = new ProgressDialog(this);
+            dialog.setTitle("Loading Details...");
+            dialog.show();
+        }
+        else {
+            textView_meal_name.setText("response.title");
+            textView_meal_source.setText("response.sourceName");
+            textView_meal_summary.setText("response.summary");
+        }
     }
 
     private void findViews() {
